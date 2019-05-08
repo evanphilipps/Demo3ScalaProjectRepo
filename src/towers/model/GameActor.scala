@@ -1,7 +1,6 @@
 package towers.model
 
 import akka.actor.{Actor, ActorRef, PoisonPill, Props}
-import towers.model.game_objects.Projectile
 import towers.model.physics.PhysicsVector
 
 
