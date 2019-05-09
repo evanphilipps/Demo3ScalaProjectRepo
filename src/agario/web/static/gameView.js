@@ -1,7 +1,7 @@
 var socket = io.connect({transports: ['websocket']});
 socket.on('gameState', parseGameState);
 
-const tileSize = 10;
+const tileSize = 20;
 
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
@@ -10,12 +10,15 @@ context.globalCompositeOperation = 'source-over';
 function parseGameState(event) {
     // console.log(event);
     const gameState = JSON.parse(event);
-    console.log(gameState)
+    //console.log(gameState);
     drawGameBoard(gameState['gridSize']);
-
-    for (let player of gameState['players']) {
-        placeCircle(player['x'], player['y'], player['id'] === socket.id ? '#56bcff' : '#ff0000', 2.0);
+    for (let food of gameState['food']) {
+        placeCircle(food['x'], food['y'], '#D77F6D', .25);
     }
+    for (let player of gameState['players']) {
+        placeCircle(player['x'], player['y'], player['id'] === socket.id ? '#56bcff' : '#ff0000', player['size']);
+    }
+
 }
 
 
@@ -23,7 +26,6 @@ function drawGameBoard(gridSize) {
 
     const gridWidth = gridSize['x'];
     const gridHeight = gridSize['y'];
-
     context.clearRect(0, 0, gridWidth * tileSize, gridHeight * tileSize);
 
     canvas.setAttribute("width", gridWidth * tileSize);
@@ -50,12 +52,14 @@ function placeCircle(x, y, color, size) {
     context.beginPath();
     context.arc(x * tileSize,
         y * tileSize,
-        size / 10.0 * tileSize,
+        size * tileSize,
         0,
         2 * Math.PI);
     context.fill();
-    context.strokeStyle = 'black';
-    context.stroke();
+    //context.strokeStyle = 'black';
+    //context.stroke();
 }
+
+
 
 
