@@ -11,20 +11,28 @@ class Testing extends FunSuite {
     var game = new Game()
     game.addPlayer("Elijah")
     game.addPlayer("Evan")
+
     game.players("Elijah").location.x = 5
     game.players("Elijah").location.y = 5
     game.players("Evan").location.x = 7
     game.players("Evan").location.y = 5
+
     game.eatPlayer()
+
     assert(game.players.head._2.size == game.startSize)
     assert(game.players.last._2.size == game.startSize)
+
     assert(game.players.head._2.location.x == 5)
     assert(game.players.head._2.location.y == 5)
     assert(game.players.last._2.location.x == 7)
     assert(game.players.last._2.location.y == 5)
+
     assert(game.players.size == 2)
+
     game.players.head._2.size = 3.0
+
     game.eatPlayer()
+
     assert(game.players.head._2.size == 3.125)
     assert(game.players.last._2.size == game.startSize)
   }
