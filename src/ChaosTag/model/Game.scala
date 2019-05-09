@@ -56,6 +56,7 @@ class Game {
     while(food.size < 20){
       val newFood = new Food(new PhysicsVector(nextDouble*level.gridWidth, nextDouble*level.gridHeight), new PhysicsVector(0, 0))
       food += (nextInt -> newFood)
+
     }
   }
 
@@ -64,14 +65,14 @@ class Game {
       val px = player._2.location.x
       val py = player._2.location.y
       for(nom <- food){
-      if(calcDist(player._2.location, nom._2.location) < player._2.size) {
-        food -= nom._1
-        nom._2.destroy()
-        player._2.size += .1
-      }
+        if(calcDist(player._2.location, nom._2.location) < player._2.size) {
+          food -= nom._1
+          nom._2.destroy()
+          player._2.size += .1
+        }
       }
     }
-    }
+  }
 
   def blockTile(x: Int, y: Int, width: Int = 1, height: Int = 1): Unit = {
     val ul = new PhysicsVector(x, y)
@@ -134,12 +135,12 @@ class Game {
       var count = 0
       for(player2 <- players){
         if(player1.location != player2._2.location){
-        val dist = calcDist(player1.location, player2._2.location)
-        if(dist > player2._2.size){
-          count += 1
-          println(dist, player2._2.size, count)
+          val dist = calcDist(player1.location, player2._2.location)
+          if(dist > player2._2.size){
+            count += 1
+            println(dist, player2._2.size, count)
+          }
         }
-      }
       }
       if(count == players.size-1){
         println("CLEAR")
