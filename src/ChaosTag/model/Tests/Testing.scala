@@ -9,8 +9,8 @@ import org.scalatest.FunSuite
 class Testing extends FunSuite {
   test("Game works!"){
     var game = new Game()
-    game.addPlayer("Elijah")
-    game.addPlayer("Evan")
+    game.PlayerJoined("Elijah")
+    game.PlayerLeft("Evan")
 
     game.players("Elijah").location.x = 5
     game.players("Elijah").location.y = 5

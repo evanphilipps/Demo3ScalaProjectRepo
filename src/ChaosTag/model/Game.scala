@@ -12,7 +12,7 @@ class Game {
   val world: World = new World(10)
 
 
-  var level: Level = new Level()
+  var level: gameMap = new gameMap()
   val startSize: Double = .5
   var players: Map[String, Player] = Map()
   var food: Map[Int, Food] = Map(nextInt -> new Food(new PhysicsVector(level.gridWidth/2, level.gridHeight/2), new PhysicsVector(0, 0)))
@@ -20,7 +20,7 @@ class Game {
   var lastUpdateTime: Long = System.nanoTime()
 
 
-  def loadLevel(newLevel: Level): Unit = {
+  def loadLevel(newLevel: gameMap): Unit = {
     world.boundaries = List()
     level = newLevel
     blockTile(0, 0, level.gridWidth, level.gridHeight)
@@ -29,7 +29,7 @@ class Game {
   }
 
 
-  def addPlayer(id: String): Unit = {
+  def PlayerJoined(id: String): Unit = {
     val player = new Player(startingVector(), new PhysicsVector(0, 0))
     player.size = startSize
     players += (id -> player)
@@ -37,7 +37,7 @@ class Game {
   }
 
 
-  def removePlayer(id: String): Unit = {
+  def PlayerLeft(id: String): Unit = {
     players(id).destroy()
     players -= id
   }
@@ -93,39 +93,8 @@ class Game {
 
 
 
-  def update(): Unit = {
-    val time: Long = System.nanoTime()
-    val dt = (time - this.lastUpdateTime) / 1000000000.0
-    Physics.updateWorld(this.world, dt)
-    eatPlayer()
-    makeFood()
-    eatFood()
-    endGame()
-    this.lastUpdateTime = time
-  }
 
-  def gameState(): String = {
 
-    val gameState: Map[String, JsValue] = Map(
-      "gridSize" -> Json.toJson(Map("x" -> level.gridWidth, "y" -> level.gridHeight)),
-      "food" -> Json.toJson(this.food.map({ case (k, v) => Json.toJson(Map(
-        "x" -> Json.toJson(v.location.x),
-        "y" -> Json.toJson(v.location.y),
-        "name" -> Json.toJson(k)
-      )) })),
-      "players" -> Json.toJson(this.players.map({ case (k, v) => Json.toJson(Map(
-        "x" -> Json.toJson(v.location.x),
-        "y" -> Json.toJson(v.location.y),
-        "v_x" -> Json.toJson(v.velocity.x),
-        "v_y" -> Json.toJson(v.velocity.y),
-        "id" -> Json.toJson(k),
-        "size" -> Json.toJson(v.size)
-      )) })),
-
-      )
-
-    Json.stringify(Json.toJson(gameState))
-  }
 
 
   def eatPlayer(): Unit = {
@@ -146,14 +115,14 @@ class Game {
               player2._2.size = startSize
               player2._2.location.x = level.startingLocation.x
               player2._2.location.y = level.startingLocation.y
-              respawn(player2._2)
+              //respawn(player2._2)
             }
             else if(player2._2.size > player1._2.size){
               player2._2.size += .25*player1._2.size
               player1._2.size = startSize
               player1._2.location.x = nextDouble*level.gridWidth
               player1._2.location.y = nextDouble*level.gridHeight
-              respawn(player1._2)
+              //respawn(player1._2)
             }
           }
         }
@@ -185,6 +154,38 @@ class Game {
     val x2 = v2.x
     val y2 = v2.y
     Math.sqrt(Math.pow(x1-x2, 2) + Math.pow(y1-y2, 2))
+  }
+  def update(): Unit = {
+    val time: Long = System.nanoTime()
+    val dt = (time - this.lastUpdateTime) / 1000000000.0
+    Physics.updateWorld(this.world, dt)
+    eatPlayer()
+    makeFood()
+    eatFood()
+    endGame()
+    this.lastUpdateTime = time
+  }
+  def gameState(): String = {
+
+    val gameState: Map[String, JsValue] = Map(
+      "gridSize" -> Json.toJson(Map("x" -> level.gridWidth, "y" -> level.gridHeight)),
+      "food" -> Json.toJson(this.food.map({ case (k, v) => Json.toJson(Map(
+        "x" -> Json.toJson(v.location.x),
+        "y" -> Json.toJson(v.location.y),
+        "name" -> Json.toJson(k)
+      )) })),
+      "players" -> Json.toJson(this.players.map({ case (k, v) => Json.toJson(Map(
+        "x" -> Json.toJson(v.location.x),
+        "y" -> Json.toJson(v.location.y),
+        "v_x" -> Json.toJson(v.velocity.x),
+        "v_y" -> Json.toJson(v.velocity.y),
+        "id" -> Json.toJson(k),
+        "size" -> Json.toJson(v.size)
+      )) })),
+
+    )
+
+    Json.stringify(Json.toJson(gameState))
   }
 
 }

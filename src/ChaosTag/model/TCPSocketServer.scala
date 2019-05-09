@@ -16,7 +16,7 @@ class TCPSocketServer(gameActor: ActorRef) extends Actor {
 
   IO(Tcp) ! Bind(self, new InetSocketAddress("localhost", 8000))
 
-  var webServers: Set[ActorRef] = Set()
+  var servers: Set[ActorRef] = Set()
   var buffer: String = ""
   val delimiter: String = "~"
 
@@ -25,37 +25,37 @@ class TCPSocketServer(gameActor: ActorRef) extends Actor {
 
     case c: Connected =>
       println("Client Connected: " + c.remoteAddress)
-      this.webServers = this.webServers + sender()
+      this.servers = this.servers + sender()
       sender() ! Register(self)
 
     case PeerClosed =>
       println("Client Disconnected: " + sender())
-      this.webServers = this.webServers - sender()
+      this.servers = this.servers - sender()
 
     case r: Received =>
       buffer += r.data.utf8String
       while (buffer.contains(delimiter)) {
         val curr = buffer.substring(0, buffer.indexOf(delimiter))
         buffer = buffer.substring(buffer.indexOf(delimiter) + 1)
-        handleMessageFromWebServer(curr)
+        handleWebMsg(curr)
       }
 
     case SendGameState =>
       gameActor ! SendGameState
 
     case gs: GameState =>
-      this.webServers.foreach((client: ActorRef) => client ! Write(ByteString(gs.gameState + delimiter)))
+      this.servers.foreach((client: ActorRef) => client ! Write(ByteString(gs.gameState + delimiter)))
   }
 
 
-  def handleMessageFromWebServer(messageString:String):Unit = {
+  def handleWebMsg(messageString:String):Unit = {
     val message: JsValue = Json.parse(messageString)
     val username = (message \ "username").as[String]
-    val messageType = (message \ "action").as[String]
+    val caseMessage = (message \ "action").as[String]
 
-    messageType match {
-      case "connected" => gameActor ! AddPlayer(username)
-      case "disconnected" => gameActor ! RemovePlayer(username)
+    caseMessage match {
+      case "connected" => gameActor ! PlayerJoined(username)
+      case "disconnected" => gameActor ! PlayerLeft(username)
       case "move" =>
         val x = (message \ "x").as[Double]
         val y = (message \ "y").as[Double]
@@ -76,10 +76,10 @@ object TCPSocketServer {
 
     import scala.concurrent.duration._
 
-    val gameActor = actorSystem.actorOf(Props(classOf[GameActor]))
-    val server = actorSystem.actorOf(Props(classOf[TCPSocketServer], gameActor))
+    val actor = actorSystem.actorOf(Props(classOf[actor]))
+    val server = actorSystem.actorOf(Props(classOf[TCPSocketServer], actor))
 
-    actorSystem.scheduler.schedule(16.milliseconds, 32.milliseconds, gameActor, UpdateGame)
+    actorSystem.scheduler.schedule(16.milliseconds, 32.milliseconds, actor, UpdateGame)
     actorSystem.scheduler.schedule(32.milliseconds, 32.milliseconds, server, SendGameState)
 
   }

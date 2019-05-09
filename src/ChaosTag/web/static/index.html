@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Towers</title>
+    <title>CHAOS TAG</title>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
     <link rel="stylesheet" href="styles.css">
     <link href='https://fonts.googleapis.com/css?family=Black Ops One' rel='stylesheet'>
@@ -12,9 +12,9 @@
 <body>
 
 <canvas id="canvas"></canvas>
-<script src="gameView.js"></script>
-<script src="inputController.js"></script>
-<div class="instructions">
+<script src="ShowGame.js"></script>
+<script src="userInput.js"></script>
+<div id="instructions">
     <h1>Instructions:</h1>
     <h2>How to play:</h2>
     <ul>
@@ -22,7 +22,7 @@
         <li>You, the blue circle, can get bigger by eating food and eliminating players.</li>
         <li>Eliminate players of a smaller size by chasing them and consuming them.</li>
         <li>Once one player reaches critical mass, that player wins, and a new game begins.</li>
-        <li>Note: Food is worth .1 "mass", and players are worth 10% of eliminated players "mass"</li>
+        <li>Note: Food is worth .1 "mass", and players are worth 25% of eliminated players "mass"</li>
     </ul>
 </div>
 </body>
