@@ -1,4 +1,4 @@
-package agario.model.game_objects
+package ChaosTag.model.game_objects
 
 class GameObject {
 

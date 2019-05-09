@@ -1,4 +1,4 @@
-package agario.model
+package ChaosTag.model
 
 
 // Received by Multiple Types

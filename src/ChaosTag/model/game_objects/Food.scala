@@ -1,6 +1,6 @@
-package agario.model.game_objects
+package ChaosTag.model.game_objects
 
-import agario.model.physics.PhysicsVector
+import ChaosTag.model.physics.PhysicsVector
 
 class Food(inputLocation: PhysicsVector, inputVelocity: PhysicsVector) extends PhysicalObject(inputLocation, inputVelocity) {
 

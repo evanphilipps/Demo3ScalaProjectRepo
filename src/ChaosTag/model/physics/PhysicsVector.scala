@@ -1,4 +1,4 @@
-package agario.model.physics
+package ChaosTag.model.physics
 
 class PhysicsVector(var x: Double, var y: Double, var z: Double = 0.0) {
 

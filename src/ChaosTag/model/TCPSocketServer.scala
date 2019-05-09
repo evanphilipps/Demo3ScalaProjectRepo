@@ -1,4 +1,4 @@
-package agario.model
+package ChaosTag.model
 
 import java.net.InetSocketAddress
 

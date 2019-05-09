@@ -1,7 +1,7 @@
-package agario.model
+package ChaosTag.model
 
 import akka.actor.{Actor, ActorRef, PoisonPill, Props}
-import agario.model.physics.PhysicsVector
+import ChaosTag.model.physics.PhysicsVector
 
 
 class GameActor extends Actor {

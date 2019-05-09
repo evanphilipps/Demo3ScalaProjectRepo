@@ -32,10 +32,10 @@ function drawGameBoard(gridSize) {
     canvas.setAttribute("height", gridHeight * tileSize);
 
     context.strokeStyle = '#bbbbbb';
-    for (let j = 0; j <= gridWidth; j++) {
+    for (let i = 0; i <= gridWidth; i++) {
         context.beginPath();
-        context.moveTo(j * tileSize, 0);
-        context.lineTo(j * tileSize, gridHeight * tileSize);
+        context.moveTo(i * tileSize, 0);
+        context.lineTo(i * tileSize, gridHeight * tileSize);
         context.stroke();
     }
     for (let k = 0; k <= gridHeight; k++) {
@@ -56,8 +56,6 @@ function placeCircle(x, y, color, size) {
         0,
         2 * Math.PI);
     context.fill();
-    //context.strokeStyle = 'black';
-    //context.stroke();
 }
 
 

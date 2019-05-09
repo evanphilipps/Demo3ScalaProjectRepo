@@ -1,9 +1,9 @@
-package agario.model
+package ChaosTag.model
 
 import play.api.libs.json.{JsValue, Json, Writes}
-import agario.model.game_objects._
-import agario.model.physics.{Physics, PhysicsVector, World}
-
+import ChaosTag.model.game_objects._
+import ChaosTag.model.physics.{Physics, PhysicsVector, World}
+import util.control.Breaks._
 import scala.collection.mutable.ListBuffer
 import scala.util.Random._
 
@@ -41,16 +41,26 @@ class Game {
     players(id).destroy()
     players -= id
   }
-
-  def makeFood(): Unit ={
-    while(food.size < 2){
+  def endGame(): Unit = {
+    val boardArea = level.gridWidth*level.gridHeight
+    val criticalMass = boardArea/3
+    for(player <- players){
+      if(Math.PI*Math.pow(player._2.size, 2) >= criticalMass){
+        for(player <- players){
+          player._2.size = startSize
+        }
+      }
+    }
+  }
+  def makeFood(): Unit = {
+    while(food.size < 20){
       val newFood = new Food(new PhysicsVector(nextDouble*level.gridWidth, nextDouble*level.gridHeight), new PhysicsVector(0, 0))
       food += (nextInt -> newFood)
 
     }
   }
 
-  def eatFood() = {
+  def eatFood(): Unit = {
     for(player <- players){
       val px = player._2.location.x
       val py = player._2.location.y
@@ -78,7 +88,7 @@ class Game {
 
 
   def startingVector(): PhysicsVector = {
-    new PhysicsVector(nextInt(level.gridWidth-1), nextInt(level.gridHeight-1))
+    new PhysicsVector(nextInt(level.gridWidth-2)+1, nextInt(level.gridHeight-2)+1)
   }
 
 
@@ -90,6 +100,7 @@ class Game {
     checkForPlayerHits()
     makeFood()
     eatFood()
+    endGame()
     this.lastUpdateTime = time
   }
 
@@ -135,20 +146,41 @@ class Game {
               player2._2.size = startSize
               player2._2.location.x = level.startingLocation.x
               player2._2.location.y = level.startingLocation.y
+              respawn(player2._2)
             }
             else if(player2._2.size > player1._2.size){
               player2._2.size += .25*player1._2.size
               player1._2.size = startSize
-              player1._2.location.x = nextInt(level.gridWidth)
-              player1._2.location.y = nextInt(level.gridHeight)
+              player1._2.location.x = nextDouble*level.gridWidth
+              player1._2.location.y = nextDouble*level.gridHeight
+              respawn(player1._2)
             }
           }
         }
       }
     }
   }
+  def respawn(player1: Player): Unit = {
+    var flag: Boolean = true
 
-  def calcDist(v1: PhysicsVector, v2: PhysicsVector) = {
+    while(flag){
+      var count = 0
+      for(player2 <- players){
+        if(player1.location != player2._2.location){
+        val dist = calcDist(player1.location, player2._2.location)
+        if(dist > player2._2.size){
+          count += 1
+          println(dist, player2._2.size, count)
+        }
+      }
+      }
+      if(count == players.size-1){
+        println("CLEAR")
+        flag = false
+      }
+    }
+  }
+  def calcDist(v1: PhysicsVector, v2: PhysicsVector): Double = {
     val x1 = v1.x
     val y1 = v1.y
     val x2 = v2.x

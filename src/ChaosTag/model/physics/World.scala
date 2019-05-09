@@ -1,6 +1,6 @@
-package agario.model.physics
+package ChaosTag.model.physics
 
-import agario.model.game_objects.{Boundary, PhysicalObject}
+import ChaosTag.model.game_objects.{Boundary, PhysicalObject}
 
 class World(var gravity: Double) {
 
