@@ -1,0 +1,28 @@
+ul {
+    font-family: 'Baloo Chettan';
+    font-size: 18px;
+    margin: 0;
+    height: 70px;
+    position: absolute;
+    top: 200px;
+    left: 1500px;
+}
+h1 {
+    font-family: 'Baloo Chettan';
+    font-size: 65px;
+    margin: 0;
+    height: 70px;
+    position: absolute;
+    top: 2px;
+    left: 1520px;
+}
+h2 {
+    color: orange;
+    font-family: 'Baloo Chettan';
+    font-size: 50px;
+    margin: 0;
+    height: 70px;
+    position: absolute;
+    top: 100px;
+    left: 1520px;
+}
