@@ -97,7 +97,7 @@ class Game {
     val time: Long = System.nanoTime()
     val dt = (time - this.lastUpdateTime) / 1000000000.0
     Physics.updateWorld(this.world, dt)
-    checkForPlayerHits()
+    eatPlayer()
     makeFood()
     eatFood()
     endGame()
@@ -128,7 +128,7 @@ class Game {
   }
 
 
-  def checkForPlayerHits(): Unit = {
+  def eatPlayer(): Unit = {
     for(player1 <- players){
       val p1id = player1._1
       val p1size = player1._2.size
@@ -162,7 +162,6 @@ class Game {
   }
   def respawn(player1: Player): Unit = {
     var flag: Boolean = true
-
     while(flag){
       var count = 0
       for(player2 <- players){
