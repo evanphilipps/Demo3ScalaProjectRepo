@@ -56,7 +56,6 @@ class Game {
     while(food.size < 20){
       val newFood = new Food(new PhysicsVector(nextDouble*level.gridWidth, nextDouble*level.gridHeight), new PhysicsVector(0, 0))
       food += (nextInt -> newFood)
-
     }
   }
 
