@@ -106,14 +106,12 @@ class Game {
               player2._2.size = startSize
               player2._2.location.x = level.startingLocation.x
               player2._2.location.y = level.startingLocation.y
-              //respawn(player2._2)
             }
             else if(player2._2.size > player1._2.size){
               player2._2.size += .25*player1._2.size
               player1._2.size = startSize
               player1._2.location.x = nextDouble*level.gridWidth
               player1._2.location.y = nextDouble*level.gridHeight
-              //respawn(player1._2)
             }
           }
         }
@@ -135,7 +133,6 @@ class Game {
         }
       }
       if(count == players.size-1){
-        println("CLEAR")
         flag = false
       }
     }
