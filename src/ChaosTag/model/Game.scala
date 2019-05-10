@@ -85,7 +85,7 @@ class Game {
   }
 
   def startingVector(): PhysicsVector = {
-    new PhysicsVector(nextInt(level.gridWidth-2)+1, nextInt(level.gridHeight-2)+1)
+    new PhysicsVector(nextInt(level.gridWidth-2), nextInt(level.gridHeight-2))
   }
 
   def eatPlayer(): Unit = {
@@ -158,7 +158,6 @@ class Game {
   }
 
   def gameState(): String = {
-
     val gameState: Map[String, JsValue] = Map(
       "gridSize" -> Json.toJson(Map("x" -> level.gridWidth, "y" -> level.gridHeight)),
       "food" -> Json.toJson(this.food.map({ case (k, v) => Json.toJson(Map(
@@ -177,5 +176,4 @@ class Game {
     )
     Json.stringify(Json.toJson(gameState))
   }
-
 }
