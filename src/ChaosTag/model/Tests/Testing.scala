@@ -12,6 +12,9 @@ class Testing extends FunSuite {
     game.PlayerJoined("Elijah")
     game.PlayerJoined("Evan")
 
+    var vector1 = new PhysicsVector(10, 12, 3)
+    var vector2 = new PhysicsVector(24, 36, 90)
+
     game.players("Elijah").location.x = 7
     game.players("Elijah").location.y = 5
     game.players("Evan").location.x = 7
@@ -61,6 +64,8 @@ class Testing extends FunSuite {
     game.makeFood()
 
     assert(game.food.size == 20)
+
+    assert(game.calcDist(vector1, vector2) == 27.784887978899608)
   }
 }
 

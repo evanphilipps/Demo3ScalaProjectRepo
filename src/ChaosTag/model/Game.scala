@@ -10,10 +10,8 @@ import scala.util.Random._
 class Game {
 
   val world: World = new World(10)
-
-
   var level: gameMap = new gameMap()
-  val startSize: Double = .5
+  val startSize: Double = 0.5
   var players: Map[String, Player] = Map()
   var food: Map[Int, Food] = Map(nextInt -> new Food(new PhysicsVector(level.gridWidth/2, level.gridHeight/2), new PhysicsVector(0, 0)))
 
@@ -40,6 +38,7 @@ class Game {
     players(id).destroy()
     players -= id
   }
+
   def endGame(): Unit = {
     val boardArea = level.gridWidth*level.gridHeight
     val criticalMass = boardArea/3
@@ -85,7 +84,7 @@ class Game {
   }
 
   def startingVector(): PhysicsVector = {
-    new PhysicsVector(nextInt(level.gridWidth-2), nextInt(level.gridHeight-2))
+    new PhysicsVector(nextInt(level.gridWidth-2) + 1, nextInt(level.gridHeight-2) + 1)
   }
 
   def eatPlayer(): Unit = {
@@ -139,11 +138,7 @@ class Game {
   }
 
   def calcDist(v1: PhysicsVector, v2: PhysicsVector): Double = {
-    val x1 = v1.x
-    val y1 = v1.y
-    val x2 = v2.x
-    val y2 = v2.y
-    Math.sqrt(Math.pow(x1-x2, 2) + Math.pow(y1-y2, 2))
+    Math.sqrt(Math.pow(v1.x-v2.x, 2) + Math.pow(v1.y-v2.y, 2))
   }
 
   def update(): Unit = {
