@@ -24,6 +24,5 @@ class actor extends Actor {
     case message: StopPlayer => game.players(message.username).stop()
     case UpdateGame => game.update()
     case SendGameState => sender() ! GameState(game.gameState())
-
   }
 }

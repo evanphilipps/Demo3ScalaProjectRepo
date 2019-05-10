@@ -25,7 +25,6 @@ class Game {
     level = newLevel
     blockTile(0, 0, level.gridWidth, level.gridHeight)
     players.values.foreach(player => player.location = new PhysicsVector(nextInt(level.gridWidth-1), nextInt(level.gridHeight-1)))
-
   }
 
 
@@ -52,11 +51,11 @@ class Game {
       }
     }
   }
+
   def makeFood(): Unit = {
     while(food.size < 20){
       val newFood = new Food(new PhysicsVector(nextDouble*level.gridWidth, nextDouble*level.gridHeight), new PhysicsVector(0, 0))
       food += (nextInt -> newFood)
-
     }
   }
 
@@ -79,23 +78,15 @@ class Game {
     val ur = new PhysicsVector(x + width, y)
     val lr = new PhysicsVector(x + width, y + height)
     val ll = new PhysicsVector(x, y + height)
-
     world.boundaries ::= new Boundary(ul, ur)
     world.boundaries ::= new Boundary(ur, lr)
     world.boundaries ::= new Boundary(lr, ll)
     world.boundaries ::= new Boundary(ll, ul)
   }
 
-
   def startingVector(): PhysicsVector = {
     new PhysicsVector(nextInt(level.gridWidth-2)+1, nextInt(level.gridHeight-2)+1)
   }
-
-
-
-
-
-
 
   def eatPlayer(): Unit = {
     for(player1 <- players){
@@ -129,6 +120,7 @@ class Game {
       }
     }
   }
+
   def respawn(player1: Player): Unit = {
     var flag: Boolean = true
     while(flag){
@@ -148,6 +140,7 @@ class Game {
       }
     }
   }
+
   def calcDist(v1: PhysicsVector, v2: PhysicsVector): Double = {
     val x1 = v1.x
     val y1 = v1.y
@@ -155,6 +148,7 @@ class Game {
     val y2 = v2.y
     Math.sqrt(Math.pow(x1-x2, 2) + Math.pow(y1-y2, 2))
   }
+
   def update(): Unit = {
     val time: Long = System.nanoTime()
     val dt = (time - this.lastUpdateTime) / 1000000000.0
@@ -165,6 +159,7 @@ class Game {
     endGame()
     this.lastUpdateTime = time
   }
+
   def gameState(): String = {
 
     val gameState: Map[String, JsValue] = Map(
@@ -182,9 +177,7 @@ class Game {
         "id" -> Json.toJson(k),
         "size" -> Json.toJson(v.size)
       )) })),
-
     )
-
     Json.stringify(Json.toJson(gameState))
   }
 
