@@ -12,8 +12,8 @@ class Testing extends FunSuite {
     game.PlayerJoined("Elijah")
     game.PlayerJoined("Evan")
 
-    var vector1 = new PhysicsVector(10, 12, 3)
-    var vector2 = new PhysicsVector(24, 36, 90)
+    val vector1 = new PhysicsVector(10, 12, 3)
+    val vector2 = new PhysicsVector(24, 36, 90)
 
     game.players("Elijah").location.x = 7
     game.players("Elijah").location.y = 5
@@ -66,6 +66,19 @@ class Testing extends FunSuite {
     assert(game.food.size == 20)
 
     assert(game.calcDist(vector1, vector2) == 27.784887978899608)
+
+    assert(game.calcDist(game.players("Evan").location, game.players("Elijah").location) == 12.806248474865697)
+
+    game.PlayerJoined("Subject")
+
+    assert(game.players.size == 3)
+
+    game.players("Subject").size = 50000
+    game.endGame()
+
+    assert(game.players("Elijah").size == game.startSize)
+    assert(game.players("Evan").size == game.startSize)
+    assert(game.players("Subject").size == game.startSize)
   }
 }
 
